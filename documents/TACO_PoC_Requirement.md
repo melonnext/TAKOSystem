@@ -1,6 +1,6 @@
 # TACOシステム：PoC構築仕様書 (v1.0)
 
-本ドキュメントは、トランプ氏の言動がもたらす経済的影響を「TACO係数」としてスコアリングし、リアルタイムで可視化する自律型GraphRAGシステムの構築案である。
+本ドキュメントは、ある人物の言動がもたらす経済的影響を「TACO係数」としてスコアリングし、リアルタイムで可視化する自律型GraphRAGシステムの構築案である。
 
 ---
 
@@ -24,7 +24,7 @@
 
 ## 1. システム概要
 
-- トランプ（Trump）氏の言動を監視し、Aggression（攻撃性）、Confusion（混乱）、Opportunity（好機）の3軸で解析。
+- ある人物の言動を監視し、Aggression（攻撃性）、Confusion（混乱）、Opportunity（好機）の3軸で解析。
 - Neo4jのグラフ構造を用いて、特定の企業やセクターへのリスク伝播をシミュレーション。
 
 ---
@@ -73,7 +73,7 @@
 
 ## 4. 処理プロセス (LangGraph Workflow)
 
-1. **Crawler**: NewsAPI.orgおよびGoogle News RSSから「Trump」や経済関連の最新記事をAPI/RSS経由で抽出（Yahooニュースから変更）
+1. **Crawler**: NewsAPI.orgおよびGoogle News RSSから「ある人物」や経済関連の最新記事をAPI/RSS経由で抽出（Yahooニュースから変更）
 2. **Extractor**: LLMで記事を解析。人名・組織を抽出し「名寄せ」を実行
 3. **TACO Analyst**: 記事内容から A, C, O の各数値を算出（0-100）
 4. **Graph Updater**: Neo4j上の既存ノードに値をマージ。関連セクターの係数も動的に更新
