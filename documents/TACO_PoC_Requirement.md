@@ -13,8 +13,8 @@ graph TD
 subgraph "PC (Local Environment)"
 Crawler[バッチ: 10分おき巡回] -->|書き込み| DB[(Neo4j: TACOデータ)]
 DB -->|読み取り| WebApp[Webアプリ: Streamlit]
-Crawler -->|TACO係数算出依頼| LLM[LLM (Ollama/Phi-2/Mistral 7B)]
-WebApp -->|回答生成依頼| LLM
+Crawler -->|TACO係数算出依頼| LLM_Ollama_Phi2_Mistral7B["LLM<br/>(Ollama/Phi-2/Mistral 7B)"]
+WebApp -->|回答生成依頼| LLM_Ollama_Phi2_Mistral7B
 end
 
 NewsAPI[NewsAPI.org] -->|API/RSS| Crawler
@@ -25,7 +25,7 @@ WebApp <-->|Chrome| PC((PC))
 style Crawler fill:#e1f5fe,stroke:#01579b
 style WebApp fill:#fff9c4,stroke:#fbc02d
 style DB fill:#c8e6c9,stroke:#2e7d32
-style LLM fill:#f3e5f5,stroke:#6a1b9a
+style LLM_Ollama_Phi2_Mistral7B fill:#f3e5f5,stroke:#6a1b9a
 ```
 
 ### 1. バッチ側：自律型クローラー（TACO Scan）
