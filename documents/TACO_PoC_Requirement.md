@@ -15,7 +15,8 @@ Crawler[バッチ: 10分おき巡回] -->|書き込み| DB[(Neo4j: TACOデータ
 DB -->|読み取り| WebApp[Webアプリ: Streamlit]
 end
 
-Yahoo[Yahooニュース] -->|Scrape| Crawler
+NewsAPI[NewsAPI.org] -->|API/RSS| Crawler
+GoogleNews[Google News RSS] -->|RSS| Crawler
 WebApp <-->|Browser| Mobile((スマホ))
 
 style Crawler fill:#e1f5fe,stroke:#01579b
@@ -27,7 +28,7 @@ style DB fill:#c8e6c9,stroke:#2e7d32
 「シビュラシステム」の監視の目に相当。
 
 - **役割**: 10分おきに自動起動、または常駐してNewsAPI.org/Google News RSSを監視
-- **処理フロー**: ニュース取得 → LLMでTACO係数を算出 → Neo4jを更新
+- **処理フロー**: NewsAPI.org・Google News RSSからニュース取得 → LLMでTACO係数を算出 → Neo4jを更新
 - **実装例**: scheduleライブラリや`while True: sleep(600)`を使ったシンプルなPythonスクリプト
 
 ### 2. Webアプリ側：ダッシュボード（TACO UI）
@@ -90,7 +91,7 @@ style DB fill:#c8e6c9,stroke:#2e7d32
 
 ## 4. 処理プロセス (LangGraph Workflow)
 
-1. **Crawler**: NewsAPI.orgおよびGoogle News RSSから「ある人物」や経済関連の最新記事をAPI/RSS経由で抽出（Yahooニュースから変更）
+1. **Crawler**: NewsAPI.orgおよびGoogle News RSSから「ある人物」や経済関連の最新記事をAPI/RSS経由で抽出
 2. **Extractor**: LLMで記事を解析。人名・組織を抽出し「名寄せ」を実行
 3. **TACO Analyst**: 記事内容から A, C, O の各数値を算出（0-100）
 4. **Graph Updater**: Neo4j上の既存ノードに値をマージ。関連セクターの係数も動的に更新
@@ -100,7 +101,7 @@ style DB fill:#c8e6c9,stroke:#2e7d32
 
 ## 追加・変更履歴
 
-- データ取得元を「Yahooニュース」から「NewsAPI.org」「Google News RSS」に変更
+- データ取得元をNewsAPI.org・Google News RSSに統一
 - 経済情報もNewsAPI.orgおよびGoogle News RSSから取得する方針に統一
 - データ取得時は各サービスのrobots.txtおよび利用規約を必ず確認し、許可された範囲のみ取得を行うことを明記
 
