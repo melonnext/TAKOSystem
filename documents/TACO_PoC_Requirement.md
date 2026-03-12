@@ -6,6 +6,23 @@
 
 ## サブシステム構成
 
+## システム構成図
+
+```mermaid
+graph TD
+subgraph "PC (Local Environment)"
+Crawler[バッチ: 10分おき巡回] -->|書き込み| DB[(Neo4j: TACOデータ)]
+DB -->|読み取り| WebApp[Webアプリ: Streamlit]
+end
+
+Yahoo[Yahooニュース] -->|Scrape| Crawler
+WebApp <-->|Browser| Mobile((スマホ))
+
+style Crawler fill:#e1f5fe,stroke:#01579b
+style WebApp fill:#fff9c4,stroke:#fbc02d
+style DB fill:#c8e6c9,stroke:#2e7d32
+```
+
 ### 1. バッチ側：自律型クローラー（TACO Scan）
 「シビュラシステム」の監視の目に相当。
 
