@@ -13,15 +13,19 @@ graph TD
 subgraph "PC (Local Environment)"
 Crawler[バッチ: 10分おき巡回] -->|書き込み| DB[(Neo4j: TACOデータ)]
 DB -->|読み取り| WebApp[Webアプリ: Streamlit]
+Crawler -->|TACO係数算出依頼| LLM[LLM (Ollama/Phi-2/Mistral 7B)]
+WebApp -->|回答生成依頼| LLM
 end
 
 NewsAPI[NewsAPI.org] -->|API/RSS| Crawler
 GoogleNews[Google News RSS] -->|RSS| Crawler
 WebApp <-->|Browser| Mobile((スマホ))
+WebApp <-->|Chrome| PC((PC))
 
 style Crawler fill:#e1f5fe,stroke:#01579b
 style WebApp fill:#fff9c4,stroke:#fbc02d
 style DB fill:#c8e6c9,stroke:#2e7d32
+style LLM fill:#f3e5f5,stroke:#6a1b9a
 ```
 
 ### 1. バッチ側：自律型クローラー（TACO Scan）
@@ -55,7 +59,7 @@ style DB fill:#c8e6c9,stroke:#2e7d32
 | Graph DB | Neo4j (Docker) | データの因果関係・相関を管理 |
 | Orchestrator | LangGraph (Python) | エージェントのループ制御 |
 | UI Framework | Streamlit | モバイル対応ダッシュボード |
-| Data Source | NewsAPI.org, Google News RSS (経済/国際) | API/RSSによる定期取得（Yahooニュースから変更） |
+| Data Source | NewsAPI.org, Google News RSS (経済/国際) | API/RSSによる定期取得 |
 | クローリング | clinerulrs（Pythonライブラリ） | NewsAPI.org, Google News RSS等のデータ取得に利用 |
 
 ---
